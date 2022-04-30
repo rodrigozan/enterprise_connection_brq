@@ -1,18 +1,45 @@
-const express = require('express');
-const config = require('config');
-const consign = require('consign')
+import express from 'express'
+import consign from 'consign'
+import config from 'config'
+import mongoose from 'mongoose'
+import db from "../database/config.js"
 
-module.exports = () => {
-    const app = express();
+// class App {
+//     constructor() {
+//         this.express = express();
 
-    // SETANDO VARIÁVEIS DA APLICAÇÃO
-    app.set('port', process.env.PORT || config.get('server.port'));
+//         this.database();
+//         this.middlewares();
+//         this.routes();
 
-    // MIDDLEWARES
-    app.use(express.json());
+//         this.express.set('port', process.env.PORT || config.get('server.port'));
 
-    consign()
-    .include("api")
+//         this.express.use(express.json());
 
-    return app;
-};
+//         database() {
+//             mongoose.connect(db.uri, { useNewUrlParser: true });
+//         }
+
+//         middlewares() {
+//             this.express.use(express.json()); 
+//         }
+
+//         routes() {
+//             this.express.use(require("../api/routes"));
+//         }
+//     }
+// }
+
+// module.exports = new App().express;
+
+const app = express()
+
+app.set('port', process.env.PORT || config.get('server.port'));
+
+// MIDDLEWARES
+app.use(express.json());
+
+mongoose.connect(db.uri, { useNewUrlParser: true });
+
+
+export default app
