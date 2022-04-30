@@ -1,0 +1,20 @@
+{
+  "name": "enterprise_connection_brq",
+  "version": "1.0.0",
+  "description": "A API for Enterprise Connection BRQ - FIAP",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "author": "Rodrigo Zandonadi",
+  "license": "ISC",
+  "dependencies": {
+    "config": "^3.3.7",
+    "consign": "^0.1.6",
+    "dotenv": "^16.0.0",
+    "express": "^4.18.1",
+    "mongoose": "^6.3.1"
+  }
+}
