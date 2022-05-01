@@ -20,7 +20,7 @@ router.get("/users", userController.findAll)
 
 
 //GetBy ID
-router.get("/users/:userId", userController.findOne)
+router.get("/users/:userId", userController.findById)
 
 //GetBy Name
 router.get("/users/:name", userController.findByName)
