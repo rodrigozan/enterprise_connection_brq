@@ -1,11 +1,10 @@
 import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
 import { UserModel } from '../models/index'
 
 const controller = {};
 
 // Create User
-controller.register = async (req, res, next) => {
+controller.register = async (req, res) => {
 
     UserModel
   
@@ -17,21 +16,19 @@ controller.register = async (req, res, next) => {
   
         if (user.length >= 1) {
   
-          return res.status(httpStatus.CONFLICT).json({
+          return res.status(401).json({
   
-            message: "Mail exists"
+            message: "E-mail exists"
   
           });
   
         } else {
   
           bcrypt.hash(req.body.password, 10, async (err, hash) => {
-  
-            console.log(hash);
-  
+    
             if (err) {
   
-              return res.status(httpStatus.INTERNAL_SERVER_ERROR).json({
+              return res.status(500).json({
   
                 error: err
   
@@ -45,7 +42,7 @@ controller.register = async (req, res, next) => {
   
                 email: req.body.email,
   
-                cpf: req.body.country,
+                cpf: req.body.cpf,
   
                 password: hash
   
@@ -53,7 +50,10 @@ controller.register = async (req, res, next) => {
   
               let { password, __v, ...user } = newUser.toObject();
   
-              return res.status(httpStatus.CREATED).message('User created successful').json({ data: { user } });
+              return res.status(201).json({ 
+                message: 'User created successful',
+                data: { user } 
+              });
   
             }
           });
@@ -66,83 +66,26 @@ controller.register = async (req, res, next) => {
 controller.findAll = async (req, res) => {
     try {
       let users = await UserModel.find();
-      return res.json(users);
+      return res.status(200).json(users);
     } catch (error) {
       return res
-        .status(httpStatus.INTERNAL_SERVER_ERROR)
+        .status(500)
         .json({ error: error.toString() });
     }
   };
   
-  
-  // Get User By ID
-  controller.findById = async (req, res) => {
+  //Filter users by CPF, Name or Email
+  controller.filter = async (req, res) => {
     try {
-      let user = await UserModel.findById(req.params.userId);
-      if (!user) {
-        return res
-          .status(httpStatus.BAD_REQUEST)
-          .json({ message: "User not found" });
-      }
-      return res.status(200).json(user);
-    } catch (error) {
-      return res
-        .status(httpStatus.INTERNAL_SERVER_ERROR)
-        .json({ error: error.toString() });
-    }
-  };
+      const filters = req.body;
 
-   // Get User By Email
-   controller.findByEmail = async (req, res) => {
-    try {
-      let user = await UserModel.findOne({email: req.params.email});
-      if (!user) {
-        return res
-          .status(httpStatus.BAD_REQUEST)
-          .json({ message: "User not found" });
-      }
-      return res.status(200).json(user);
-    } catch (error) {
-      return res
-        .status(httpStatus.INTERNAL_SERVER_ERROR)
-        .json({ error: error.toString() });
-    }
-  };
+      const users = await UserModel.find({ ...filters });
 
-   // Get User By Name
-   controller.findByName = async (req, res) => {
-    try {
-      let user = await UserModel.findOne({name: req.params.name});
-      if (!user) {
-        return res
-          .status(httpStatus.BAD_REQUEST)
-          .json({ message: "User not found" });
-      }
-      return res.status(200).json(user)
-    } catch (error) {
-      return res
-        .status(httpStatus.INTERNAL_SERVER_ERROR)
-        .json({ error: error.toString() });
+      res.status(200).send(users)
+    } catch(err) {
+      res.status(500).send({ error: err.message });
     }
   };
-
-   // Get User By CPF
-   controller.findByCpf = async (req, res) => {
-    try {
-      let user = await UserModel.findOne({cpf: req.params.cpf});
-      if (!user) {
-        return res
-          .status(httpStatus.BAD_REQUEST)
-          .json({ message: "User not found" });
-      }
-      return res.status(200).json(user)
-    } catch (error) {
-      return res
-        .status(httpStatus.INTERNAL_SERVER_ERROR)
-        .json({ error: error.toString() });
-    }
-  };
-  
   
   // Update User By ID
   controller.update = async (req, res) => {
@@ -168,7 +111,7 @@ controller.findAll = async (req, res) => {
       let user = await UserModel.findByIdAndRemove(req.params.userId);
       if (!user) {
         return res
-          .status(httpStatus.BAD_REQUEST)
+          .status(400)
           .json({ message: "User not found" });
       }
       return res.json({ message: "User deleted successfully!" });

@@ -1,4 +1,4 @@
-import mongoose from 'mongoose'
+import mongoose from 'mongoose';
 
 const user = mongoose.Schema(
     {
@@ -12,7 +12,11 @@ const user = mongoose.Schema(
         },
         cpf: {
             type: Number,
-            required: false
+            required: false,
+        },
+        password: {
+            type: String,
+            required: true
         }
     },
     {
@@ -21,8 +25,8 @@ const user = mongoose.Schema(
     {
         timestamps: true
     }
-)
+);
 
-const UserModel = mongoose.model('Users', user)
+const UserModel = mongoose.model('Users', user);
 
-export { UserModel } 
+export { UserModel };

@@ -1,42 +1,29 @@
 import express from "express";
 
-import userController from "../controllers/index";
+import userController from "../controllers/index.js";
 
 const router = express.Router();
 
-router.get("/", function (req, res, next) {
+router.get("/", function (req, res) {
 
-    res.json({ message: "from index api" });
+    res.json({ message: "From index api" });
 
 });
 
-
 // Create
-router.post("/register", userController.register)
-
+router.post("/register", userController.register);
 
 //GetAll Data
-router.get("/users", userController.findAll)
+router.get("/users", userController.findAll);
 
-
-//GetBy ID
-router.get("/users/:userId", userController.findById)
-
-//GetBy Name
-router.get("/users/:name", userController.findByName)
-
-//GetBy Email
-router.get("/users/:email", userController.findByEmail)
-
-//GetBy CPF
-router.get("/users/:cpf", userController.findByCpf)
+//Filter
+router.post("/users", userController.filter);
 
 //update by ID
-router.put("/users/:userId", userController.update)
+router.put("/users/:userId", userController.update);
+
+//Delete by ID
+router.delete("/users/:userId", userController.delete);
 
 
-//Delete
-router.delete("/users/:userId", userController.delete)
-
-
-export { router };
+export default router;
