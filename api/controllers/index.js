@@ -43,13 +43,9 @@ controller.register = async (req, res, next) => {
   
                 name: req.body.name,
   
-                address: req.body.address,
-  
                 email: req.body.email,
   
-                country: req.body.country,
-  
-                phone: req.body.phone,
+                cpf: req.body.country,
   
                 password: hash
   
@@ -80,7 +76,7 @@ controller.findAll = async (req, res) => {
   
   
   // Get User By ID
-  controller.findOne = async (req, res) => {
+  controller.findById = async (req, res) => {
     try {
       let user = await UserModel.findById(req.params.userId);
       if (!user) {
