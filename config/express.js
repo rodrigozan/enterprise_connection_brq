@@ -14,5 +14,5 @@ app.use(express.json());
 mongoose.connect(db.uri, { useNewUrlParser: true });
 
 app.use(routes);
-W
+
 export default app
