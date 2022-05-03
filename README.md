@@ -1,7 +1,7 @@
 ## Esse projeto foi desenvolvido no formato de API em <a href="https://nodejs.org/en/download/">Node.js</a> e utiliza a Cloud Mongodb Atlas.
 
 ### Comando para instalar dependências do projeto: 
-- `npm install babel-env bcrypt config express mongoose nodemon`
+- `npm install`
 
 ### Após instalar dependências, usar seguinte comando para rodar a aplicação:
 - `npm start`
